@@ -1,96 +1,75 @@
 {
-  "name": "네이버 백엔드 합격 로드맵 (Hierarchical)",
-  "description": "지방 국립대 출신 합격자의 실제 학습 이력과 로드맵을 결합한 다계층 투두 번들",
+  "name": "naver",
+  "description": "6개월간의 월별 집중 과제와 역량 증명 지표를 결합한 합격자 가이드입니다.",
   "tag_group": {
-    "name": "네이버 채용",
+    "name": "네이버 백엔드 합격 투두 번들 (실전 로드맵)",
     "color": "#03C75A",
-    "description": "네이버 백엔드 집중 준비를 위한 태그 그룹",
     "is_todo_group": true
   },
   "tags": [
-    { "name": "기본기", "color": "#FFD700", "description": "CS 및 언어 기초 체력" },
-    { "name": "심화", "color": "#4285F4", "description": "데이터베이스 및 아키텍처" },
-    { "name": "실전", "color": "#EA4335", "description": "인프라 및 면접 전략" }
+    { "name": "언어/CS", "color": "#FFD700" },
+    { "name": "프로젝트/DB", "color": "#4285F4" },
+    { "name": "코테/면접", "color": "#EA4335" }
   ],
   "todos": [
     {
-      "title": "Stage 1: Core Foundation (Month 1-2)",
-      "description": "기초가 탄탄한 개발자를 선호하는 네이버의 성향에 맞춘 기본기 정복",
-      "tag_names": ["기본기"],
+      "title": "Month 1: 기초 다지기 및 언어 심화",
+      "tag_names": ["언어/CS"],
       "children": [
-        {
-          "title": "Java/Kotlin 언어 심화",
-          "description": "JVM 구조 및 효율적인 메모리 관리 학습",
-          "tag_names": ["기본기"],
-          "children": [
-            { "title": "JVM 구조(Memory Area, Class Loader) 이해", "tag_names": ["기본기"] },
-            { "title": "GC(G1, ZGC) 알고리즘 및 튜닝 기본", "tag_names": ["기본기"] },
-            { "title": "Stream API 및 함수형 프로그래밍 내부 동작", "tag_names": ["기본기"] }
-          ]
-        },
-        {
-          "title": "CS 핵심 및 알고리즘",
-          "description": "면접과 코테의 근간이 되는 전공 지식",
-          "tag_names": ["기본기"],
-          "children": [
-            { "title": "Network (HTTP 1.1/2.0/3.0, TCP 3-way Handshake)", "tag_names": ["기본기"] },
-            { "title": "OS (프로세스/스레드, 컨텍스트 스위칭, 가상 메모리)", "tag_names": ["기본기"] },
-            { "title": "코딩테스트 (프로그래머스 Lv.2~3 60문제 풀이)", "tag_names": ["기본기"] }
-          ]
-        }
+        { "title": "[언어] JVM 프로파일링을 통한 메모리 누수 지점 탐색 및 해결", "tag_names": ["언어/CS"] },
+        { "title": "[언어] 멀티스레드 환경 내 Race Condition 방지를 위한 동기화 적용", "tag_names": ["언어/CS"] },
+        { "title": "[CS] TCP 구조 기반 네트워크 장애 추론 및 멱등성 API 설계", "tag_names": ["언어/CS"] },
+        { "title": "[코테] 프로그래머스 Lv.2 30문제 (효율성 테스트 통과 중심)", "tag_names": ["코테/면접"] }
       ]
     },
     {
-      "title": "Stage 2: Engineering & Scalability (Month 3-4)",
-      "description": "단순 구현을 넘어선 성능 최적화와 트러블슈팅 경험 확보",
-      "tag_names": ["심화"],
+      "title": "Month 2: 코테 집중 및 시스템 이해",
+      "tag_names": ["코테/면접"],
       "children": [
-        {
-          "title": "데이터베이스 성능 최적화",
-          "description": "대량의 데이터를 효율적으로 다루는 방법",
-          "tag_names": ["심화"],
-          "children": [
-            { "title": "B+Tree 인덱스 구조 및 쿼리 실행 계획(Explain) 분석", "tag_names": ["심화"] },
-            { "title": "트랜잭션 격리 수준(Isolation Level)과 MVCC", "tag_names": ["심화"] }
-          ]
-        },
-        {
-          "title": "백엔드 아키텍처 심화",
-          "description": "확장 가능한 시스템 구축을 위한 설계 역량",
-          "tag_names": ["심화"],
-          "children": [
-            { "title": "Redis 캐싱 전략(Look-aside, Write-back) 적용", "tag_names": ["심화"] },
-            { "title": "동시성 이슈 해결 (Optimistic vs Pessimistic Lock)", "tag_names": ["심화"] },
-            { "title": "JPA 성능 최적화 (N+1 문제 해결, Fetch Join)", "tag_names": ["심화"] }
-          ]
-        }
+        { "title": "[코테] 백준 골드 진입 (DP, 그래프, 구현 유형별 정리)", "tag_names": ["코테/면접"] },
+        { "title": "[CS] OS 리소스 경합이 서비스 응답에 미치는 영향 분석", "tag_names": ["언어/CS"] },
+        { "title": "[CS] DB ACID 트랜잭션 및 Isolation Level별 부작용 정리", "tag_names": ["프로젝트/DB"] },
+        { "title": "[프로젝트] Spring Boot + JPA 기반 도메인 모델링 및 CRUD 완성", "tag_names": ["프로젝트/DB"] }
       ]
     },
     {
-      "title": "Stage 3: Advanced & Real-world (Month 5-6)",
-      "description": "대용량 트래픽 대응 설계 및 최종 합격을 위한 면접 딥다이브",
-      "tag_names": ["실전"],
+      "title": "Month 3: 프로젝트 본격화 (성능 최적화)",
+      "tag_names": ["프로젝트/DB"],
       "children": [
-        {
-          "title": "인프라 및 분산 시스템",
-          "description": "클라우드 네이티브 환경과 이벤트 기반 아키텍처",
-          "tag_names": ["실전"],
-          "children": [
-            { "title": "Docker/CI-CD 파이프라인(GitHub Actions) 구축", "tag_names": ["실전"] },
-            { "title": "Prometheus/Grafana 서버 모니터링 및 부하 테스트", "tag_names": ["실전"] },
-            { "title": "Kafka를 이용한 비동기 이벤트 처리 설계", "tag_names": ["실전"] }
-          ]
-        },
-        {
-          "title": "최종 합격 준비 (Final Pass)",
-          "description": "이력서 정리와 면접 시뮬레이션",
-          "tag_names": ["실전"],
-          "children": [
-            { "title": "프로젝트 트러블슈팅 성과 수치화 (응답속도 개선 등)", "tag_names": ["실전"] },
-            { "title": "기술적 의사결정(Trade-off) 경험 정리", "tag_names": ["실전"] },
-            { "title": "1/2차 면접 대비 CS 꼬리 질문 및 인성 질문 준비", "tag_names": ["실전"] }
-          ]
-        }
+        { "title": "[DB] 실행 계획 분석을 통한 100만 건 데이터 인덱스 최적화", "tag_names": ["프로젝트/DB"] },
+        { "title": "[DB] JPA N+1 문제 해결 및 쿼리 통신 횟수 단 1회로 최적화", "tag_names": ["프로젝트/DB"] },
+        { "title": "[프로젝트] Redis 분산 락을 이용한 선착순 로직 데이터 정합성 보장", "tag_names": ["프로젝트/DB"] },
+        { "title": "[코테] 골드 티어 유지 (주 5문제 및 카카오 기출 풀이)", "tag_names": ["코테/면접"] }
+      ]
+    },
+    {
+      "title": "Month 4: 포트폴리오 정리 및 인프라",
+      "tag_names": ["프로젝트/DB"],
+      "children": [
+        { "title": "[인프라] Nginx 활용 수평 확장 및 세션 공유 이슈 해결", "tag_names": ["프로젝트/DB"] },
+        { "title": "[인프라] Prometheus/Grafana 실시간 모니터링 및 장애 감지 구축", "tag_names": ["프로젝트/DB"] },
+        { "title": "[프로젝트] 고가용성을 고려한 Redis 캐싱 전략(Look-aside) 수립", "tag_names": ["프로젝트/DB"] },
+        { "title": "[문서화] 기술적 해결 과정(Troubleshooting) 3건 성과 수치화", "tag_names": ["프로젝트/DB"] }
+      ]
+    },
+    {
+      "title": "Month 5: 서류 + 면접 준비",
+      "tag_names": ["코테/면접"],
+      "children": [
+        { "title": "[이력서] 기술적 의사결정(Trade-off) 논리 중심 지원서 완성", "tag_names": ["코테/면접"] },
+        { "title": "[면접] CS 및 프로젝트 꼬리 질문 50선 모의 답변 준비", "tag_names": ["코테/면접"] },
+        { "title": "[면접] STAR 기법 기반 기술적 한계 극복 경험 스크립트 작성", "tag_names": ["코테/면접"] },
+        { "title": "[코테] 네이버 실전 모의고사 및 타임어택 훈련 (주 2회)", "tag_names": ["코테/면접"] }
+      ]
+    },
+    {
+      "title": "Month 6: 실전 전형",
+      "tag_names": ["코테/면접"],
+      "children": [
+        { "title": "[코테] 네이버 공채/인턴 코딩 테스트 응시 및 복기", "tag_names": ["코테/면접"] },
+        { "title": "[면접] 1차 기술 면접 (기술적 깊이 및 설계 역량 증명)", "tag_names": ["코테/면접"] },
+        { "title": "[면접] 2차 임원 면접 (협업 방식 및 기술 가치관 전달)", "tag_names": ["코테/면접"] },
+        { "title": "[최종] 네이버 백엔드 최종 합격", "tag_names": ["코테/면접"] }
       ]
     }
   ]

@@ -1,113 +1,73 @@
 {
-  "name": "비전공자 배달의 민족 프론트엔드 합격 로드맵",
-  "description": "비전공자에서 우아한형제들(배민) 신입 개발자로 거듭나기 위한 기술적 깊이와 협업 역량 강화 로드맵",
+  "name": "beamin",
+  "description": "비전공자 시점에서 6개월간 탄탄한 기본기와 배민 특유의 기술 생태계(React, TS, Test)를 정복하는 합격 가이드입니다.",
   "tag_group": {
-    "name": "배민 FE 채용",
+    "name": "비전공자 배달의민족 프론트엔드 합격 투두 번들 (실전 로드맵)",
     "color": "#2AC1BC",
-    "description": "우아한형제들 프론트엔드 집중 준비를 위한 태그 그룹",
     "is_todo_group": true
   },
   "tags": [
-    { "name": "웹 기초", "color": "#FFD700", "description": "브라우저 및 JavaScript 심화" },
-    { "name": "엔지니어링", "color": "#4285F4", "description": "React 및 TypeScript 전문성" },
-    { "name": "품질 및 실전", "color": "#EA4335", "description": "테스트, 최적화 및 기술 면접" }
+    { "name": "언어/기초", "color": "#F7DF1E" },
+    { "name": "프레임워크/성능", "color": "#61DAFB" },
+    { "name": "코테/취업", "color": "#2AC1BC" }
   ],
   "todos": [
     {
-      "title": "Stage 1: JavaScript & Browser Deep Dive (Month 1-2)",
-      "description": "도구(프레임워크)를 배우기 전, 근본이 되는 웹 표준과 언어의 이해도를 우아한 수준으로 끌어올리기",
-      "tag_names": ["웹 기초"],
+      "title": "Month 1: JavaScript Deep Dive & CS 기초",
+      "tag_names": ["언어/기초"],
       "children": [
-        {
-          "title": "Modern JavaScript (ES6+) 완벽 이해",
-          "description": "단순 문법을 넘어 내부 동작 원리를 파악하여 '실행 가능한 지식'으로 전환",
-          "tag_names": ["웹 기초"],
-          "children": [
-            { "title": "실행 컨텍스트(Execution Context)와 클로저의 원리", "tag_names": ["웹 기초"] },
-            { "title": "이벤트 루프(Event Loop)와 비동기 처리 메커니즘", "tag_names": ["웹 기초"] },
-            { "title": "Prototype 기반 상속과 클래스의 차이점", "tag_names": ["웹 기초"] }
-          ]
-        },
-        {
-          "title": "브라우저 렌더링 최적화 기초",
-          "description": "사용자가 화면을 보는 과정(CRP)을 이해하고 성능 개선의 근거 마련",
-          "tag_names": ["웹 기초"],
-          "children": [
-            { "title": "Critical Rendering Path (DOM, CSSOM 생성부터 Paint까지)", "tag_names": ["웹 기초"] },
-            { "title": "Reflow와 Repaint 발생 조건 및 최소화 방안", "tag_names": ["웹 기초"] }
-          ]
-        },
-        {
-          "title": "비전공자를 위한 필수 CS",
-          "description": "프론트엔드 개발자로서 소통에 막힘이 없는 네트워크/OS 기초",
-          "tag_names": ["웹 기초"],
-          "children": [
-            { "title": "HTTP/HTTPS 프로토콜 및 RESTful API 설계 원칙", "tag_names": ["웹 기초"] },
-            { "title": "CORS 에러의 원인과 해결 방법", "tag_names": ["웹 기초"] }
-          ]
-        }
+        { "title": "[JS] 실행 컨텍스트와 클로저를 활용한 상태 은닉화 구현", "tag_names": ["언어/기초"] },
+        { "title": "[JS] 이벤트 루프 기반 비동기 처리(Promise, Async/Await) 내부 동작 원리 파악", "tag_names": ["언어/기초"] },
+        { "title": "[CS] 브라우저 렌더링 과정(CRP) 최적화 및 리플로우/리페인트 방지", "tag_names": ["언어/기초"] },
+        { "title": "[코테] 프로그래머스 Lv.1 전수 풀이 및 문자열 조작 숙달", "tag_names": ["코테/취업"] }
       ]
     },
     {
-      "title": "Stage 2: Robust Engineering with React & TS (Month 3-4)",
-      "description": "확장 가능하고 타입 안정성이 확보된 코드를 작성하는 역량 확보",
-      "tag_names": ["엔지니어링"],
+      "title": "Month 2: React Core & 상태 관리",
+      "tag_names": ["프레임워크/성능"],
       "children": [
-        {
-          "title": "React Deep Dive",
-          "description": "단순 사용을 넘어 렌더링 효율과 선언적 UI의 핵심 파악",
-          "tag_names": ["엔지니어링"],
-          "children": [
-            { "title": "React Hooks의 동작 원리와 Custom Hooks 설계", "tag_names": ["엔지니어링"] },
-            { "title": "Virtual DOM과 Diffing 알고리즘 이해", "tag_names": ["엔지니어링"] },
-            { "title": "상태 관리 전략 (TanStack Query를 이용한 서버 상태 분리)", "tag_names": ["엔지니어링"] }
-          ]
-        },
-        {
-          "title": "TypeScript 실전 적용",
-          "description": "배민 프론트엔드의 표준인 TypeScript로 안전한 개발 환경 구축",
-          "tag_names": ["엔지니어링"],
-          "children": [
-            { "title": "Interface와 Type Alias의 적절한 활용 구분", "tag_names": ["엔지니어링"] },
-            { "title": "Generic을 활용한 재사용 가능한 컴포넌트 설계", "tag_names": ["엔지니어링"] },
-            { "title": "Utility Types와 엄격한 타입 가드(Type Guard) 적용", "tag_names": ["엔지니어링"] }
-          ]
-        }
+        { "title": "[React] 가상 DOM(Virtual DOM)의 Diffing 알고리즘 및 재조정(Reconciliation) 이해", "tag_names": ["프레임워크/성능"] },
+        { "title": "[React] Custom Hooks를 활용한 비즈니스 로직 분리 및 컴포넌트 재사용성 극대화", "tag_names": ["프레임워크/성능"] },
+        { "title": "[상태관리] Context API vs Redux/Zustand 비교를 통한 전역 상태 설계", "tag_names": ["프레임워크/성능"] },
+        { "title": "[네트워크] HTTP/HTTPS 프로토콜 이해 및 REST API 설계 원칙 준수", "tag_names": ["언어/기초"] }
       ]
     },
     {
-      "title": "Stage 3: Quality, Testing & Final Pass (Month 5-6)",
-      "description": "신뢰할 수 있는 코드를 만들고, 배민의 '기술적 소통' 문화에 적응하기",
-      "tag_names": ["품질 및 실전"],
+      "title": "Month 3: TypeScript & 안정성 강화",
+      "tag_names": ["언어/기초"],
       "children": [
-        {
-          "title": "테스트 코드 및 클린 코드",
-          "description": "배민 개발 문화의 핵심인 '유지보수 가능한 코드' 작성",
-          "tag_names": ["품질 및 실전"],
-          "children": [
-            { "title": "Jest와 React Testing Library를 활용한 단위 테스트", "tag_names": ["품질 및 실전"] },
-            { "title": "관심사 분리를 통한 컴포넌트 아키텍처 개선", "tag_names": ["품질 및 실전"] }
-          ]
-        },
-        {
-          "title": "성능 최적화 및 실전 프로젝트",
-          "description": "사용자 경험을 극대화하는 성능 튜닝 및 포트폴리오 완성",
-          "tag_names": ["품질 및 실전"],
-          "children": [
-            { "title": "Web Vitals 측정 및 이미지/코드 스플리팅 최적화", "tag_names": ["품질 및 실전"] },
-            { "title": "GitHub Actions를 활용한 CI/CD 파이프라인 구축", "tag_names": ["품질 및 실전"] }
-          ]
-        },
-        {
-          "title": "최종 합격 준비",
-          "description": "왜(Why)에 집중하는 면접 대비와 배민 다움(Cultural Fit) 정리",
-          "tag_names": ["품질 및 실전"],
-          "children": [
-            { "title": "프로젝트 내 기술적 의사결정 과정(Trade-off) 정리", "tag_names": ["품질 및 실전"] },
-            { "title": "우아한형제들 기술 블로그 기반 트렌드 분석", "tag_names": ["품질 및 실전"] },
-            { "title": "모의 면접을 통한 꼬리 질문 대비 (Deep Dive)", "tag_names": ["품질 및 실전"] }
-          ]
-        }
+        { "title": "[TS] Generic과 Union 타입을 활용한 타입 안정성이 보장된 API 모듈 작성", "tag_names": ["언어/기초"] },
+        { "title": "[테스트] Jest와 RTL(React Testing Library)을 이용한 단위 테스트 및 유저 시나리오 검증", "tag_names": ["프레임워크/성능"] },
+        { "title": "[코테] 프로그래머스 Lv.2 20문제 및 자료구조(Stack, Queue, Hash) 정리", "tag_names": ["코테/취업"] }
+      ]
+    },
+    {
+      "title": "Month 4: 프로젝트 고도화 및 성능 최적화",
+      "tag_names": ["프레임워크/성능"],
+      "children": [
+        { "title": "[성능] Web Vitals 측정 및 이미지 Lazy Loading, Code Splitting 적용을 통한 LCP 개선", "tag_names": ["프레임워크/성능"] },
+        { "title": "[프로젝트] 배민 서비스(주문/장바구니) 핵심 기능 클론 및 대용량 트래픽 대비 렌더링 최적화", "tag_names": ["프레임워크/성능"] },
+        { "title": "[인프라] GitHub Actions를 활용한 CI/CD 파이프라인 구축 및 자동 배포", "tag_names": ["프레임워크/성능"] }
+      ]
+    },
+    {
+      "title": "Month 5: 포트폴리오 및 면접 전략",
+      "tag_names": ["코테/취업"],
+      "children": [
+        { "title": "[서류] '우아한 형제들' 인재상 기반 기술적 문제 해결 중심의 이력서 작성", "tag_names": ["코테/취업"] },
+        { "title": "[면접] 프론트엔드 핵심 질문 70선(Hoisting, This, SSR vs CSR 등) 완벽 정리", "tag_names": ["코테/취업"] },
+        { "title": "[협업] 우아한 테크코스 스타일의 클린 코드 및 코드 리뷰 연습", "tag_names": ["코테/취업"] },
+        { "title": "[코테] 카카오/배민 기출 문제 풀이 및 타임어택 실전 연습", "tag_names": ["코테/취업"] }
+      ]
+    },
+    {
+      "title": "Month 6: 실전 전형 및 최종 합격",
+      "tag_names": ["코테/취업"],
+      "children": [
+        { "title": "[코테] 배달의민족 신입/경력 공채 코딩 테스트 응시", "tag_names": ["코테/취업"] },
+        { "title": "[면접] 1차 기술 면접 (라이브 코딩 및 프로젝트 심층 질문 대응)", "tag_names": ["코테/취업"] },
+        { "title": "[면접] 2차 컬처 면접 (성장 가능성 및 커뮤니케이션 역량 어필)", "tag_names": ["코테/취업"] },
+        { "title": "[최종] 배달의민족 프론트엔드 개발자 최종 합격", "tag_names": ["코테/취업"] }
       ]
     }
   ]
