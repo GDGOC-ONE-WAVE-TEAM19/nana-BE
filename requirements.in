@@ -1,0 +1,38 @@
+# Core Framework
+fastapi
+uvicorn[standard]  # WebSocket 지원 포함
+starlette
+
+# Database
+sqlalchemy
+sqlmodel
+alembic
+asyncpg
+aiosqlite
+psycopg2-binary
+
+# Authentication
+authlib
+cryptography
+
+# HTTP Client
+httpx
+
+# Validation & Settings
+pydantic
+pydantic-settings
+
+# GraphQL
+strawberry-graphql
+
+# Templates
+jinja2
+
+# Utilities
+python-dateutil
+python-dotenv
+python-multipart
+cachetools
+
+#timezone
+tzdata

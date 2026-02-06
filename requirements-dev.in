@@ -1,0 +1,19 @@
+# Include production dependencies
+-r requirements.txt
+
+# Testing
+pytest
+pytest-asyncio
+pytest-cov
+pytest-dotenv
+coverage
+
+# Development Tools
+pip-tools
+
+# Documentation
+mkdocs>=1.6.0
+mkdocs-material>=9.5.0
+mkdocs-swagger-ui-tag>=0.7.0
+mkdocs-static-i18n[material]>=1.0.0
+mkdocs-include-markdown-plugin>=7.0.0
