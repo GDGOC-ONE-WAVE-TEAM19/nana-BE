@@ -2,7 +2,7 @@
   "name": "beamin",
   "description": "비전공자 시점에서 6개월간 탄탄한 기본기와 배민 특유의 기술 생태계(React, TS, Test)를 정복하는 합격 가이드입니다.",
   "tag_group": {
-    "name": "?비전공자 배달의민족 프론트엔드 합격 투두 번들 (실전 로드맵)",
+    "name": "비전공자 배달의민족 프론트엔드 합격 투두 번들 (실전 로드맵)",
     "color": "#2AC1BC",
     "is_todo_group": true
   },
