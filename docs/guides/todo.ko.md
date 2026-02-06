@@ -775,6 +775,53 @@ export interface TagFilterInput {
   tagIds?: string[];
   groupIds?: string[];
 }
+
+// ============================================================
+// Preset Types
+// ============================================================
+
+export interface PresetTag {
+  name: string;
+  color: string;
+  description?: string;
+}
+
+export interface PresetTagGroup {
+  name: string;
+  color: string;
+  description?: string;
+  goal_ratios?: Record<string, number>;
+  is_todo_group?: boolean;
+}
+
+export interface PresetTodo {
+  title: string;
+  description?: string;
+  tag_names?: string[];
+  children?: PresetTodo[];
+}
+
+export interface Preset {
+  name: string;
+  description?: string;
+  tag_group: PresetTagGroup;
+  tags: PresetTag[];
+  todos: PresetTodo[];
+}
+
+export interface PresetInfo {
+  name: string;
+  description?: string;
+  tag_count: number;
+  todo_count: number;
+}
+
+export interface PresetInitializeResult {
+  preset_name: string;
+  tag_group_id: string;
+  tags_created: number;
+  todos_created: number;
+}
 ```
 
 ---
@@ -1022,6 +1069,155 @@ Todo의 태그를 수정하면 연결된 모든 Schedule의 태그도 함께 업
 
 ---
 
+## 프리셋 (Preset)
+
+프리셋은 TagGroup, Tag, Todo를 일괄 생성하기 위한 템플릿입니다.
+미리 정의된 프리셋을 사용하여 빠르게 Todo 구조를 초기화할 수 있습니다.
+
+### 프리셋 구조
+
+```json
+{
+  "name": "study",
+  "description": "학습 계획 관리를 위한 기본 프리셋",
+  "tag_group": {
+    "name": "학습",
+    "color": "#4CAF50",
+    "description": "학습 관련 태그 그룹",
+    "is_todo_group": true
+  },
+  "tags": [
+    { "name": "수학", "color": "#FF5733" },
+    { "name": "영어", "color": "#3357FF" }
+  ],
+  "todos": [
+    {
+      "title": "수학 1장 학습",
+      "description": "교재 1장 개념 학습",
+      "tag_names": ["수학"],
+      "children": [
+        { "title": "개념 정리", "tag_names": ["수학"] },
+        { "title": "문제 풀이", "tag_names": ["수학"] }
+      ]
+    }
+  ]
+}
+```
+
+### 프리셋 API
+
+#### 프리셋 목록 조회
+
+```http
+GET /v1/todos/presets
+```
+
+**응답:**
+
+```json
+[
+  {
+    "name": "study",
+    "description": "학습 계획 관리를 위한 기본 프리셋",
+    "tag_count": 3,
+    "todo_count": 10
+  },
+  {
+    "name": "project",
+    "description": "프로젝트 관리를 위한 기본 프리셋",
+    "tag_count": 4,
+    "todo_count": 12
+  }
+]
+```
+
+#### 프리셋 상세 조회
+
+```http
+GET /v1/todos/presets/{preset_name}
+```
+
+**응답:**
+
+```json
+{
+  "name": "study",
+  "description": "학습 계획 관리를 위한 기본 프리셋",
+  "tag_group": {
+    "name": "학습",
+    "color": "#4CAF50",
+    "is_todo_group": true
+  },
+  "tags": [
+    { "name": "수학", "color": "#FF5733" },
+    { "name": "영어", "color": "#3357FF" }
+  ],
+  "todos": [...]
+}
+```
+
+#### 프리셋으로 초기화
+
+```http
+POST /v1/todos/initialize/{preset_name}
+```
+
+프리셋을 사용하여 TagGroup, Tag, Todo를 일괄 생성합니다.
+
+**응답 (201 Created):**
+
+```json
+{
+  "preset_name": "study",
+  "tag_group_id": "550e8400-e29b-41d4-a716-446655440000",
+  "tags_created": 3,
+  "todos_created": 10
+}
+```
+
+### 기본 제공 프리셋
+
+| 프리셋명 | 설명 | 태그 | Todo |
+|----------|------|------|------|
+| `study` | 학습 계획 관리 | 수학, 영어, 과학 | 학습 계획 + 하위 항목 |
+| `project` | 프로젝트 관리 | 기획, 개발, 테스트, 배포 | 프로젝트 단계별 Todo |
+
+### 사용 예시
+
+```typescript
+// 1. 프리셋 목록 조회
+const presetsResponse = await fetch('/v1/todos/presets');
+const presets = await presetsResponse.json();
+console.log(presets);
+// [{ name: "study", tag_count: 3, todo_count: 10 }, ...]
+
+// 2. 프리셋 상세 조회 (미리보기)
+const presetResponse = await fetch('/v1/todos/presets/study');
+const preset = await presetResponse.json();
+console.log(preset.tag_group.name); // "학습"
+console.log(preset.tags.length);     // 3
+
+// 3. 프리셋으로 초기화
+const initResponse = await fetch('/v1/todos/initialize/study', {
+  method: 'POST'
+});
+const result = await initResponse.json();
+console.log(result);
+// {
+//   preset_name: "study",
+//   tag_group_id: "...",
+//   tags_created: 3,
+//   todos_created: 10
+// }
+
+// 4. 생성된 Todo 조회
+const todosResponse = await fetch(`/v1/todos?group_ids=${result.tag_group_id}`);
+const todos = await todosResponse.json();
+console.log(todos.length); // 10
+```
+
+---
+
 ## API 요약
 
 ### Todo API
@@ -1034,6 +1230,9 @@ Todo의 태그를 수정하면 연결된 모든 Schedule의 태그도 함께 업
 | PATCH | `/v1/todos/{id}` | Todo 수정 |
 | DELETE | `/v1/todos/{id}` | Todo 삭제 |
 | GET | `/v1/todos/stats` | Todo 통계 조회 |
+| GET | `/v1/todos/presets` | 프리셋 목록 조회 |
+| GET | `/v1/todos/presets/{name}` | 프리셋 상세 조회 |
+| POST | `/v1/todos/initialize/{name}` | 프리셋으로 초기화 |
 
 ### Tag API
 

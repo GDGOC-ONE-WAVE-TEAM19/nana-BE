@@ -1,0 +1,57 @@
+{
+  "name": "project",
+  "description": "프로젝트 관리를 위한 기본 프리셋",
+  "tag_group": {
+    "name": "프로젝트",
+    "color": "#2196F3",
+    "description": "프로젝트 관리용 태그 그룹",
+    "is_todo_group": true
+  },
+  "tags": [
+    { "name": "기획", "color": "#E91E63", "description": "기획 단계 작업" },
+    { "name": "개발", "color": "#00BCD4", "description": "개발 작업" },
+    { "name": "테스트", "color": "#FF9800", "description": "테스트 작업" },
+    { "name": "배포", "color": "#4CAF50", "description": "배포 작업" }
+  ],
+  "todos": [
+    {
+      "title": "프로젝트 기획",
+      "description": "프로젝트 초기 기획 및 요구사항 정의",
+      "tag_names": ["기획"],
+      "children": [
+        { "title": "요구사항 분석", "description": "사용자 요구사항 수집 및 분석", "tag_names": ["기획"] },
+        { "title": "기능 명세서 작성", "description": "상세 기능 명세서 작성", "tag_names": ["기획"] },
+        { "title": "일정 수립", "description": "개발 일정 및 마일스톤 정의", "tag_names": ["기획"] }
+      ]
+    },
+    {
+      "title": "핵심 기능 개발",
+      "description": "MVP 핵심 기능 구현",
+      "tag_names": ["개발"],
+      "children": [
+        { "title": "백엔드 API 개발", "tag_names": ["개발"] },
+        { "title": "프론트엔드 UI 개발", "tag_names": ["개발"] },
+        { "title": "데이터베이스 설계", "tag_names": ["개발"] }
+      ]
+    },
+    {
+      "title": "테스트 및 QA",
+      "description": "품질 보증 및 테스트",
+      "tag_names": ["테스트"],
+      "children": [
+        { "title": "단위 테스트 작성", "tag_names": ["테스트"] },
+        { "title": "통합 테스트", "tag_names": ["테스트"] },
+        { "title": "사용자 테스트", "tag_names": ["테스트"] }
+      ]
+    },
+    {
+      "title": "배포 준비",
+      "description": "프로덕션 배포 준비",
+      "tag_names": ["배포"],
+      "children": [
+        { "title": "배포 환경 구성", "tag_names": ["배포"] },
+        { "title": "모니터링 설정", "tag_names": ["배포"] }
+      ]
+    }
+  ]
+}

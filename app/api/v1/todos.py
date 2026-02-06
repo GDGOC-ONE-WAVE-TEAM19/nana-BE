@@ -35,6 +35,12 @@ from app.domain.todo.schema.dto import (
     TodoStats,
     TodoIncludeReason,
 )
+from app.domain.todo.schema.preset import (
+    Preset,
+    PresetInfo,
+    PresetInitializeResult,
+)
+from app.domain.todo.preset_service import PresetService, PresetNotFoundError
 from app.domain.todo.service import TodoService
 
 router = APIRouter(prefix="/todos", tags=["Todos"])
@@ -171,6 +177,66 @@ async def read_todos(
             result_list.append(todo_read)
 
     return result_list
+
+
+# ============================================================
+# 프리셋 관련 엔드포인트
+# ============================================================
+
+@router.get("/presets", response_model=list[PresetInfo])
+async def list_presets(
+        session: Session = Depends(get_db_transactional),
+        current_user: CurrentUser = Depends(get_current_user),
+):
+    """
+    사용 가능한 프리셋 목록 조회
+    
+    프리셋은 TagGroup, Tag, Todo를 일괄 생성하기 위한 템플릿입니다.
+    """
+    preset_service = PresetService(session, current_user)
+    return preset_service.list_presets()
+
+
+@router.get("/presets/{preset_name}", response_model=Preset)
+async def get_preset(
+        preset_name: str,
+        session: Session = Depends(get_db_transactional),
+        current_user: CurrentUser = Depends(get_current_user),
+):
+    """
+    프리셋 상세 조회
+    
+    프리셋의 TagGroup, Tag, Todo 구조를 미리 확인할 수 있습니다.
+    """
+    preset_service = PresetService(session, current_user)
+    try:
+        return preset_service.get_preset(preset_name)
+    except PresetNotFoundError as e:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.post("/initialize/{preset_name}", response_model=PresetInitializeResult, status_code=status.HTTP_201_CREATED)
+async def initialize_from_preset(
+        preset_name: str,
+        session: Session = Depends(get_db_transactional),
+        current_user: CurrentUser = Depends(get_current_user),
+):
+    """
+    프리셋으로 Todo 초기화
+    
+    지정한 프리셋을 사용하여 TagGroup, Tag, Todo를 일괄 생성합니다.
+    
+    - TagGroup 1개 생성
+    - 프리셋에 정의된 Tag들 생성
+    - 프리셋에 정의된 Todo들 생성 (계층 구조 지원)
+    """
+    preset_service = PresetService(session, current_user)
+    try:
+        return preset_service.initialize_from_preset(preset_name)
+    except PresetNotFoundError as e:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.get("/stats", response_model=TodoStats)

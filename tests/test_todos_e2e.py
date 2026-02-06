@@ -1043,3 +1043,232 @@ def test_get_single_todo_include_reason_is_match_e2e(e2e_client):
 
     todo = response.json()
     assert todo["include_reason"] == "MATCH", "단일 조회 시 include_reason은 MATCH여야 함"
+
+
+# ============================================================
+# 프리셋 E2E 테스트
+# ============================================================
+
+@pytest.mark.e2e
+def test_list_presets_e2e(e2e_client):
+    """프리셋 목록 조회 E2E 테스트"""
+    response = e2e_client.get("/v1/todos/presets")
+    
+    assert response.status_code == 200
+    presets = response.json()
+    
+    assert isinstance(presets, list)
+    assert len(presets) >= 2  # study, project
+    
+    # 프리셋 정보 확인
+    for preset in presets:
+        assert "name" in preset
+        assert "tag_count" in preset
+        assert "todo_count" in preset
+
+
+@pytest.mark.e2e
+def test_list_presets_contains_study_e2e(e2e_client):
+    """프리셋 목록에 study가 포함되는지 E2E 테스트"""
+    response = e2e_client.get("/v1/todos/presets")
+    
+    assert response.status_code == 200
+    presets = response.json()
+    
+    preset_names = [p["name"] for p in presets]
+    assert "study" in preset_names
+
+
+@pytest.mark.e2e
+def test_list_presets_contains_project_e2e(e2e_client):
+    """프리셋 목록에 project가 포함되는지 E2E 테스트"""
+    response = e2e_client.get("/v1/todos/presets")
+    
+    assert response.status_code == 200
+    presets = response.json()
+    
+    preset_names = [p["name"] for p in presets]
+    assert "project" in preset_names
+
+
+@pytest.mark.e2e
+def test_get_preset_e2e(e2e_client):
+    """프리셋 상세 조회 E2E 테스트"""
+    response = e2e_client.get("/v1/todos/presets/study")
+    
+    assert response.status_code == 200
+    preset = response.json()
+    
+    assert preset["name"] == "study"
+    assert "tag_group" in preset
+    assert "tags" in preset
+    assert "todos" in preset
+    assert len(preset["tags"]) >= 1
+    assert len(preset["todos"]) >= 1
+
+
+@pytest.mark.e2e
+def test_get_preset_not_found_e2e(e2e_client):
+    """존재하지 않는 프리셋 조회 E2E 테스트"""
+    response = e2e_client.get("/v1/todos/presets/non_existent_preset")
+    
+    assert response.status_code == 404
+    assert "non_existent_preset" in response.json()["detail"]
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_e2e(e2e_client):
+    """프리셋으로 초기화 E2E 테스트"""
+    response = e2e_client.post("/v1/todos/initialize/study")
+    
+    assert response.status_code == 201
+    result = response.json()
+    
+    assert result["preset_name"] == "study"
+    assert "tag_group_id" in result
+    assert result["tags_created"] >= 1
+    assert result["todos_created"] >= 1
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_creates_group_e2e(e2e_client):
+    """프리셋 초기화로 태그 그룹이 생성되는지 E2E 테스트"""
+    # 프리셋 초기화
+    init_response = e2e_client.post("/v1/todos/initialize/project")
+    assert init_response.status_code == 201
+    tag_group_id = init_response.json()["tag_group_id"]
+    
+    # 태그 그룹 목록 조회
+    groups_response = e2e_client.get("/v1/tags/groups")
+    assert groups_response.status_code == 200
+    
+    groups = groups_response.json()
+    group_ids = [g["id"] for g in groups]
+    
+    assert tag_group_id in group_ids
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_creates_tags_e2e(e2e_client):
+    """프리셋 초기화로 태그들이 생성되는지 E2E 테스트"""
+    # 프리셋 초기화
+    init_response = e2e_client.post("/v1/todos/initialize/study")
+    assert init_response.status_code == 201
+    result = init_response.json()
+    
+    # 태그 목록 조회
+    tags_response = e2e_client.get("/v1/tags")
+    assert tags_response.status_code == 200
+    
+    tags = tags_response.json()
+    # 초기화로 생성된 태그 수 이상이어야 함
+    assert len(tags) >= result["tags_created"]
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_creates_todos_e2e(e2e_client):
+    """프리셋 초기화로 Todo들이 생성되는지 E2E 테스트"""
+    # 프리셋 초기화
+    init_response = e2e_client.post("/v1/todos/initialize/study")
+    assert init_response.status_code == 201
+    result = init_response.json()
+    
+    # Todo 목록 조회 (해당 그룹으로 필터링)
+    todos_response = e2e_client.get(
+        "/v1/todos",
+        params={"group_ids": [result["tag_group_id"]]}
+    )
+    assert todos_response.status_code == 200
+    
+    todos = todos_response.json()
+    assert len(todos) == result["todos_created"]
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_creates_hierarchy_e2e(e2e_client):
+    """프리셋 초기화로 Todo 계층 구조가 생성되는지 E2E 테스트"""
+    # 프리셋 초기화
+    init_response = e2e_client.post("/v1/todos/initialize/study")
+    assert init_response.status_code == 201
+    result = init_response.json()
+    
+    # Todo 목록 조회
+    todos_response = e2e_client.get(
+        "/v1/todos",
+        params={"group_ids": [result["tag_group_id"]]}
+    )
+    assert todos_response.status_code == 200
+    
+    todos = todos_response.json()
+    
+    # 부모 Todo (parent_id가 None)
+    root_todos = [t for t in todos if t["parent_id"] is None]
+    assert len(root_todos) >= 1
+    
+    # 자식 Todo (parent_id가 있음)
+    child_todos = [t for t in todos if t["parent_id"] is not None]
+    assert len(child_todos) >= 1
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_assigns_tags_e2e(e2e_client):
+    """프리셋 초기화로 Todo에 태그가 할당되는지 E2E 테스트"""
+    # 프리셋 초기화
+    init_response = e2e_client.post("/v1/todos/initialize/study")
+    assert init_response.status_code == 201
+    result = init_response.json()
+    
+    # Todo 목록 조회
+    todos_response = e2e_client.get(
+        "/v1/todos",
+        params={"group_ids": [result["tag_group_id"]]}
+    )
+    assert todos_response.status_code == 200
+    
+    todos = todos_response.json()
+    
+    # 태그가 있는 Todo가 존재해야 함
+    todos_with_tags = [t for t in todos if len(t["tags"]) > 0]
+    assert len(todos_with_tags) >= 1
+
+
+@pytest.mark.e2e
+def test_initialize_from_preset_not_found_e2e(e2e_client):
+    """존재하지 않는 프리셋으로 초기화 시 404 E2E 테스트"""
+    response = e2e_client.post("/v1/todos/initialize/non_existent_preset")
+    
+    assert response.status_code == 404
+    assert "non_existent_preset" in response.json()["detail"]
+
+
+@pytest.mark.e2e
+def test_preset_workflow_e2e(e2e_client):
+    """프리셋 전체 워크플로우 E2E 테스트"""
+    # 1. 프리셋 목록 조회
+    list_response = e2e_client.get("/v1/todos/presets")
+    assert list_response.status_code == 200
+    presets = list_response.json()
+    assert len(presets) >= 1
+    
+    # 2. 첫 번째 프리셋 상세 조회
+    preset_name = presets[0]["name"]
+    detail_response = e2e_client.get(f"/v1/todos/presets/{preset_name}")
+    assert detail_response.status_code == 200
+    preset = detail_response.json()
+    
+    # 3. 프리셋으로 초기화
+    init_response = e2e_client.post(f"/v1/todos/initialize/{preset_name}")
+    assert init_response.status_code == 201
+    result = init_response.json()
+    
+    # 4. 생성된 데이터 확인
+    assert result["tags_created"] == len(preset["tags"])
+    
+    # 5. Todo 목록 조회하여 확인
+    todos_response = e2e_client.get(
+        "/v1/todos",
+        params={"group_ids": [result["tag_group_id"]]}
+    )
+    assert todos_response.status_code == 200
+    todos = todos_response.json()
+    assert len(todos) == result["todos_created"]
